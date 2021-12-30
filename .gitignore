@@ -2,3 +2,4 @@
 *.bin
 Output/*.csv
 Final Training
+.ipynb_checkpoints
