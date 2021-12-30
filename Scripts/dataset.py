@@ -149,13 +149,13 @@ def train_validate_test_split(df, train_percent=0.6, validate_percent=.2, seed=7
 
 
 if __name__=="__main__":
-    df = pd.read_csv(f'{args.dataset_path}dataset.csv').dropna()
+    df = pd.read_csv(args.dataset_path+"data.csv").dropna()
     
     #Splitting the dataset
     train_df, valid_df, test_df = train_validate_test_split(df)
-    train_df.to_csv(f'{args.dataset_path}train.csv')
-    valid_df.to_csv(f'{args.dataset_path}valid.csv')
-    test_df.to_csv(f'{args.dataset_path}test.csv')
+    train_df.to_csv(args.dataset_path+'train.csv')
+    valid_df.to_csv(args.dataset_path+'valid.csv')
+    test_df.to_csv(args.dataset_path+'test.csv')
 
     print(set(df['label'].values))
     dataset = DatasetBert(text=df.text.values, target=df.target.values)
