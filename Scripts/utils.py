@@ -2,6 +2,8 @@ import torch
 import numpy as np
 import pandas as pd
 from sklearn.metrics import confusion_matrix, classification_report, matthews_corrcoef, f1_score, accuracy_score, precision_score, recall_score
+import matplotlib.pyplot as plt
+from sklearn.metrics import roc_curve, auc
 
 from common import get_parser
 from model import BertFGBC, RobertaFGBC, XLNetFGBC, DistilBertFGBC
@@ -120,3 +122,26 @@ def load_models():
     distilbert.load_state_dict(torch.load(distilbert_path))
 
     return bert, xlnet, roberta, distilbert
+
+def calc_roc_auc(all_labels, all_logits):
+    attributes = ['non-depressed','mild', 'moderate', 'severe']
+    # Compute ROC curve and ROC area for each class
+    fpr = dict()
+    tpr = dict()
+    roc_auc = dict()
+
+    for i in range(0,len(attributes)):
+        fpr[i], tpr[i], _ = roc_curve(all_labels[:, i], all_logits[:, i])
+        roc_auc[i] = auc(fpr[i], tpr[i])
+        plt.plot(fpr[i], tpr[i], label='%s %g' % (attributes[i], roc_auc[i]))
+
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.legend(loc='lower right')
+    plt.title('ROC Curve')
+    plt.savefig(f"{args.figure_path}{args.pretrained_model_name}---roc_auc_curve---.pdf")
+    plt.clf()
+    # Compute micro-average ROC curve and ROC area
+    fpr["micro"], tpr["micro"], _ = roc_curve(all_labels.ravel(), all_logits.ravel())
+    roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
+    print(roc_auc["micro"])

@@ -3,10 +3,12 @@ import numpy as np
 import torch
 import pandas as pd
 from sklearn.metrics import confusion_matrix, classification_report, matthews_corrcoef, f1_score, accuracy_score, precision_score, recall_score
+from sklearn import svm, metrics
+import matplotlib.pyplot as plt
 
 from engine import test_eval_fn
 from common import get_parser
-from utils import set_device, load_models, generate_dataset_for_ensembling
+from utils import set_device, load_models, generate_dataset_for_ensembling, calc_roc_auc
 
 parser = get_parser()
 args = parser.parse_args()
@@ -35,6 +37,9 @@ def test_evaluate(test_df, test_data_loader, model, device, pretrained_model = a
 
     conf_mat = confusion_matrix(y_test,y_pred)
     print(conf_mat)
+    
+    #ROC Curve
+    calc_roc_auc(np.array(y_test), np.array(y_pred))
 
 def evaluate_all_models():
     bert, xlnet, roberta, distilbert = load_models()
