@@ -123,8 +123,15 @@ def load_models():
 
     return bert, xlnet, roberta, distilbert
 
+def oneHot(arr):
+    b = np.zeros((arr.size, arr.max()+1))
+    b[np.arange(arr.size),arr] = 1
+    return b
+
 def calc_roc_auc(all_labels, all_logits):
     attributes = ['non-depressed','mild', 'moderate', 'severe']
+    all_labels = oneHot(all_labels)
+
     # Compute ROC curve and ROC area for each class
     fpr = dict()
     tpr = dict()
@@ -139,7 +146,7 @@ def calc_roc_auc(all_labels, all_logits):
     plt.ylabel('True Positive Rate')
     plt.legend(loc='lower right')
     plt.title('ROC Curve')
-    plt.savefig(f"{args.figure_path}{args.pretrained_model_name}---roc_auc_curve---.pdf")
+    plt.savefig(f"{args.figure_path}{args.pretrained_model}---roc_auc_curve---.pdf")
     plt.clf()
     # Compute micro-average ROC curve and ROC area
     fpr["micro"], tpr["micro"], _ = roc_curve(all_labels.ravel(), all_logits.ravel())

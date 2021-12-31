@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from engine import test_eval_fn
 from common import get_parser
 from utils import set_device, load_models, generate_dataset_for_ensembling, calc_roc_auc
+from model import BertFGBC
 
 parser = get_parser()
 args = parser.parse_args()
@@ -18,7 +19,7 @@ torch.cuda.manual_seed(args.seed)
 
 def test_evaluate(test_df, test_data_loader, model, device, pretrained_model = args.pretrained_model):
     print(f'\nEvaluating: ---{pretrained_model}---\n')
-    y_pred, y_test = test_eval_fn(test_data_loader, model, device, pretrained_model)
+    y_pred, y_test, y_proba = test_eval_fn(test_data_loader, model, device, pretrained_model)
     acc = accuracy_score(y_test, y_pred)
     mcc = matthews_corrcoef(y_test, y_pred)
     precision = precision_score(y_test, y_pred, average='weighted')
@@ -39,7 +40,7 @@ def test_evaluate(test_df, test_data_loader, model, device, pretrained_model = a
     print(conf_mat)
     
     #ROC Curve
-    calc_roc_auc(np.array(y_test), np.array(y_pred))
+    calc_roc_auc(np.array(y_test), np.array(y_proba))
 
 def evaluate_all_models():
     bert, xlnet, roberta, distilbert = load_models()
@@ -67,4 +68,16 @@ def evaluate_all_models():
     del distilbert, test_data_loader
 
 if __name__ == "__main__":
-    evaluate_all_models()
+    bert_path = (f'{args.model_path}bert-base-uncased_Best_Val_Acc.bin')
+    bert = BertFGBC(pretrained_model="bert-base-uncased")
+    bert.load_state_dict(torch.load(bert_path))
+    
+    test_df = pd.read_csv(f'{args.dataset_path}test.csv').dropna()
+    device = set_device()
+
+    bert.to(device)
+    test_data_loader = generate_dataset_for_ensembling(pretrained_model="bert-base-uncased", df =test_df)
+    test_evaluate(test_df, test_data_loader, bert, device, pretrained_model="bert-base-uncased")
+    del bert, test_data_loader
+    
+    

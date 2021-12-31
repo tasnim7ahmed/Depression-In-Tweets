@@ -61,22 +61,22 @@ def averaging():
 
     bert.to(device)
     test_data_loader = generate_dataset_for_ensembling(pretrained_model="bert-base-uncased", df =test_df)
-    bert_output, target = test_eval_fn_ensemble(test_data_loader, bert, device, pretrained_model="bert-base-uncased")
+    bert_output, target, proba = test_eval_fn_ensemble(test_data_loader, bert, device, pretrained_model="bert-base-uncased")
     del bert, test_data_loader
 
     xlnet.to(device)
     test_data_loader = generate_dataset_for_ensembling(pretrained_model="xlnet-base-cased", df=test_df)
-    xlnet_output, target = test_eval_fn_ensemble(test_data_loader, xlnet, device, pretrained_model="xlnet-base-cased")
+    xlnet_output, target, proba = test_eval_fn_ensemble(test_data_loader, xlnet, device, pretrained_model="xlnet-base-cased")
     del xlnet, test_data_loader
 
     roberta.to(device)
     test_data_loader = generate_dataset_for_ensembling(pretrained_model="roberta-base", df=test_df)
-    roberta_output, target = test_eval_fn_ensemble(test_data_loader, roberta, device, pretrained_model="roberta-base")
+    roberta_output, target, proba = test_eval_fn_ensemble(test_data_loader, roberta, device, pretrained_model="roberta-base")
     del roberta, test_data_loader
 
     distilbert.to(device)
     test_data_loader = generate_dataset_for_ensembling(pretrained_model="distilbert-base-uncased", df=test_df)
-    distilbert_output, target = test_eval_fn_ensemble(test_data_loader, distilbert, device, pretrained_model="distilbert-base-uncased")
+    distilbert_output, target, proba = test_eval_fn_ensemble(test_data_loader, distilbert, device, pretrained_model="distilbert-base-uncased")
     del distilbert, test_data_loader
     
     output1 = np.add(bert_output, xlnet_output)

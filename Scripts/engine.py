@@ -75,6 +75,7 @@ def test_eval_fn(data_loader, model, device, pretrained_model = args.pretrained_
     val_losses = []
     final_target = []
     final_output = []
+    final_probabilities = []
 
     with torch.no_grad():
         for ii, data in enumerate(progress_bar):
@@ -82,12 +83,14 @@ def test_eval_fn(data_loader, model, device, pretrained_model = args.pretrained_
 
             loss = loss_fn(output, target)
             output = torch.log_softmax(output, dim = 1)
+            probabilities = output
             output = torch.argmax(output, dim = 1)
             val_losses.append(loss.item())
             final_target.extend(target.cpu().detach().numpy().tolist())
             final_output.extend(output.cpu().detach().numpy().tolist())
+            final_probabilities.extend(probabilities.cpu().detach().numpy().tolist())
     print(f'Output length --- {len(final_output)}, Prediction length --- {len(final_target)}')
-    return final_output, final_target
+    return final_output, final_target, final_probabilities
 
 def test_eval_fn_ensemble(data_loader, model, device, pretrained_model = args.pretrained_model):
     model.eval()
