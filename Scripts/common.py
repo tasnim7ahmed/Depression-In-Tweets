@@ -29,6 +29,6 @@ def get_parser():
     parser.add_argument("--model_path", default="../Models/", type=str, help='Save best model')
     parser.add_argument("--output_path", default="../Output/", type=str, help='Get predicted labels for test data')
     parser.add_argument("--figure_path", default="../Figures/", type=str, help='Directory for accuracy and loss plots')
-    parser.add_argument("--split", default="yes", type=str, help='If base file needs to be splitted into Train, Val, Test')
+    parser.add_argument("--split", default="no", type=str, help='If base file needs to be splitted into Train, Val, Test')
 
     return parser
