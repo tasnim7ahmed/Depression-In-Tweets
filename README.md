@@ -18,7 +18,10 @@ Mental health research through data-driven methods has been hindered by a lack o
 ```bash
 cd Scripts
 ```
-- Place the dataset in the `../Dataset/` folder and run the command `python dataset.py`
+- Place the dataset in the `../Dataset/` folder and run the command: 
+```bash
+python dataset.py
+```
 
 ### Training and Evaluation
 - Go to the `Scripts` directory:
