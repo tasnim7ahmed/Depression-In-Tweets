@@ -2,3 +2,4 @@
 *.bin
 Final Training
 .ipynb_checkpoints
+.DS_Store
