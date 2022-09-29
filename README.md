@@ -12,7 +12,7 @@
   please run the command `pip install -r requirements.txt`.
 
 ### Dataset
-Mental health research through data-driven methods has been hindered by a lack of standard typology and scarcity of adequate data. To address the issue, the authors of the DEPTWEET dataset will provide the dataset freely of charge to researchers in order to promote mental health research. [Send an email to the corresponding author for obtaining the dataset](mailto:mohsinulkabir@iut-dhaka.edu).
+Mental health research through data-driven methods has been hindered by a lack of standard typology and scarcity of adequate data. To address the issue, the authors of the DEPTWEET dataset will provide the dataset freely of charge to researchers in order to promote mental health research. [Dataset can be found in this repo](https://github.com/mohsinulkabir14/DEPTWEET).
 
 - Go to the `Scripts` directory:
 ```bash
